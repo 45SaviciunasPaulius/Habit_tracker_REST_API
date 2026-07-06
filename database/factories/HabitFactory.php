@@ -20,7 +20,7 @@ class HabitFactory extends Factory
     {
         return [
             'user_id' => User::inRandomOrder()->first()->id,
-            'title' => fake()->title(),
+            'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'frequency' => fake()->numberBetween(1,7),
             'current_streak' => fake()->numberBetween(0,100),

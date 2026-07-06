@@ -9,11 +9,11 @@ Users can create habits, log check-ins over time, and track current and longest 
 ## Features
 
 - [x] Token-based authentication (Laravel Sanctum)
-- [ ] CRUD for habits and habit logs
+- [x] CRUD for habits and habit logs
 - [ ] Streak calculation (current & longest), recalculated on a schedule
 - [x] Ownership-based authorization (users only access their own data)
 - [ ] Filtering & pagination
-- [ ] API Resources
+- [x] API Resources
 
 ## Tech stack
 

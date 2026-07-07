@@ -25,3 +25,7 @@ Users can create habits, log check-ins over time, and track current and longest 
 ## Status
 
 In progress
+
+## Needs fixing
+
+- [ ] longest_streak is not recalculated when frequency changes

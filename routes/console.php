@@ -10,14 +10,10 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 
-// Schedule::call(function(){
-//     $habits = Habit::all();
+Schedule::call(function(){
+    $habits = Habit::all();
 
-//     $habits->each(function($habit){
-//           if($habit->frequency < 7){
-//             $habit->calculateWeeklyStreak();
-//         } else{
-//             $habit->calculateDailyStreak();
-//         }
-//     });
-// })->daily();
+    $habits->each(function($habit){
+          $habit->calculateStreaks();
+    });
+})->hourly();

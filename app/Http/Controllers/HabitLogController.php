@@ -26,7 +26,7 @@ class HabitLogController extends Controller
 
         return response()->json([
             'habit' => new HabitResource($habit),
-            'logs' => HabitLogResource::collection($logs)
+            'logs' => HabitLogResource::collection($logs),
         ]);
     }
 
@@ -42,6 +42,8 @@ class HabitLogController extends Controller
         }
 
         $log = HabitLog::create(['habit_id' => $habit->id,...$validated]);
+
+        $habit->calculateStreaks();
 
         return new HabitLogResource($log);
     }
@@ -74,6 +76,8 @@ class HabitLogController extends Controller
 
         $log->update($validated);
 
+        $habit->calculateStreaks();
+
         return new HabitLogResource($log);
     }
 
@@ -87,6 +91,8 @@ class HabitLogController extends Controller
         }
 
         $log->delete();
+
+        $habit->calculateStreaks();
 
         return response()->json(['message' => 'Log was deleted successfully'], 200);
     }

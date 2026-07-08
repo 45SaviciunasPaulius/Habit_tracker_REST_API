@@ -12,7 +12,7 @@ Users can create habits, log check-ins over time, and track current and longest 
 - [x] CRUD for habits and habit logs
 - [x] Streak calculation (current & longest)
 - [x] Ownership-based authorization (users only access their own data)
-- [ ] Filtering & pagination
+- [x] Filtering & pagination
 - [x] API Resources
 
 ## Tech stack

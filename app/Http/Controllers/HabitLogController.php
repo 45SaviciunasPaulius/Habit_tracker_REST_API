@@ -31,16 +31,15 @@ class HabitLogController extends Controller
         if(count($queryItems) == 0){
             return response()->json([
             'habit' => new HabitResource($habit),
-            'logs' => HabitLogResource::collection($habit->habitLogs)
+            'logs' => HabitLogResource::collection($habit->habitLogs()->paginate(25))
         ]);
         } else{
             return response()->json([
                 'habit' => new HabitResource($habit),
-                'logs' => HabitLogResource::collection($habit->habitLogs()->where($queryItems)->get())
+                'logs' => HabitLogResource::collection($habit->habitLogs()->where($queryItems)->paginate(25))
             ]);
         }
 
-       
     }
 
     /**

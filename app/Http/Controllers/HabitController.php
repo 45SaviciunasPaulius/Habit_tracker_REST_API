@@ -22,9 +22,9 @@ class HabitController extends Controller
         $queryItems = $filter->transform($request);
 
         if(count($queryItems) == 0){
-            return HabitResource::collection($user->habits);
+            return HabitResource::collection($user->habits()->paginate(25));
         } else {
-            return HabitResource::collection($user->habits()->where($queryItems)->get());
+            return HabitResource::collection($user->habits()->where($queryItems)->paginate(25));
         }
     }
 

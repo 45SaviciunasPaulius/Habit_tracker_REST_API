@@ -8,6 +8,7 @@ use App\Http\Resources\HabitLogResource;
 use App\Http\Resources\HabitResource;
 use App\Models\Habit;
 use App\Models\HabitLog;
+use App\Services\HabitLogFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,18 +17,30 @@ class HabitLogController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Habit $habit)
-    {
+    public function index(Habit $habit, Request $request)
+    {   
         if($habit->user_id !== Auth::id()){
             return response()->json(['message' => 'Unauthorized access'], 403);
         }
 
-        $logs = $habit->habitLogs;
 
-        return response()->json([
+        $filter = new HabitLogFilter();
+        $queryItems = $filter->transform($request);
+        
+
+        if(count($queryItems) == 0){
+            return response()->json([
             'habit' => new HabitResource($habit),
-            'logs' => HabitLogResource::collection($logs),
+            'logs' => HabitLogResource::collection($habit->habitLogs)
         ]);
+        } else{
+            return response()->json([
+                'habit' => new HabitResource($habit),
+                'logs' => HabitLogResource::collection($habit->habitLogs()->where($queryItems)->get())
+            ]);
+        }
+
+       
     }
 
     /**

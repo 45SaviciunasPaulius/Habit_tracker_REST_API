@@ -6,6 +6,7 @@ use App\Http\Requests\StoreHabitRequest;
 use App\Http\Requests\UpdateHabitRequest;
 use App\Http\Resources\HabitResource;
 use App\Models\Habit;
+use App\Services\HabitFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,13 +15,17 @@ class HabitController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $filter = new HabitFilter();
+        $queryItems = $filter->transform($request);
 
-        $habits = $user->habits;
-
-        return HabitResource::collection($habits);
+        if(count($queryItems) == 0){
+            return HabitResource::collection($user->habits);
+        } else {
+            return HabitResource::collection($user->habits()->where($queryItems)->get());
+        }
     }
 
     /**

@@ -28,6 +28,4 @@ In progress
 
 ## Todo
 
-- [ ] longest_streak is not recalculated when frequency changes
-- [ ] Realistic fake data.
 - [ ] Feature tests.

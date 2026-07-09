@@ -21,7 +21,7 @@ class HabitLogFactory extends Factory
         return [
             'habit_id' => Habit::inRandomOrder()->first()->id,
             'note' => fake()->sentence(),
-            'date' => fake()->date(), 
+            'date' => fake()->dateTimeBetween('-1 years', 'now'), 
         ];
     }
 }

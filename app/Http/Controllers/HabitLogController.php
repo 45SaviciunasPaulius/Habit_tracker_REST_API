@@ -27,10 +27,12 @@ class HabitLogController extends Controller
         $filter = new HabitLogFilter();
         $queryItems = $filter->transform($request);
         
+        $habit->calculateStreaks();
 
         if(count($queryItems) == 0){
             return response()->json([
             'habit' => new HabitResource($habit),
+            'max' => $habit->calculateLongestStreak(),
             'logs' => HabitLogResource::collection($habit->habitLogs()->paginate(25))
         ]);
         } else{
@@ -69,6 +71,8 @@ class HabitLogController extends Controller
             return response()->json(['message' => 'Unauthorized access'], 403);
         }
         
+        $habit->calculateStreaks();
+
          return response()->json([
             'habit' => new HabitResource($habit),
             'log' => new HabitLogResource($log)

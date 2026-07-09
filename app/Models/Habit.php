@@ -40,8 +40,7 @@ class Habit extends Model
             $date->subDay();
         }
 
-        return $this->update(['current_streak' => $streak,
-        'longest_streak' => $this->longest_streak<$streak ? $streak : $this->longest_streak]);
+        return $this->update(['current_streak' => $streak]);
     }
 
     private function calculateWeeklyStreak(){
@@ -63,8 +62,35 @@ class Habit extends Model
             }
         }
 
-       return $this->update(['current_streak' => $streak,
-        'longest_streak' => $this->longest_streak<$streak ? $streak : $this->longest_streak]);
+       return $this->update(['current_streak' => $streak]);
+    }
+
+    private function calculateLongestStreak(){
+        $frequency = $this->frequency;
+        $today = Carbon::now();
+        $habitStart = $this->created_at;
+        $maxStreak = 0;
+        $streak = 0;
+
+        $array = [];
+
+        $week = $habitStart->copy()->startOfWeek(Carbon::MONDAY);
+        while($week < $today->copy()->addWeek()->startOfWeek(Carbon::MONDAY)){
+            $count =  $this->habitLogs()->whereBetween('date', [$week, $week->copy()->endOfWeek(Carbon::SUNDAY)])->count();
+
+            
+            if($count >= $frequency){
+                $array[] = $count;
+                $streak += $count;
+               $maxStreak = max($maxStreak, $streak);
+            } else{
+                $streak = 0;
+            }
+
+            $week->addWeek();
+        }
+
+        return $this->update(['longest_streak' => $maxStreak]);
     }
 
     public function calculateStreaks(){
@@ -73,5 +99,6 @@ class Habit extends Model
         } else{
             $this->calculateDailyStreak();
         }
+        $this->calculateLongestStreak();
     }
 }

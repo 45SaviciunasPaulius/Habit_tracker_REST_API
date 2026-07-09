@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(30)->create();
+        User::factory(9)->create();
 
         User::factory()->create([
             'name' => 'admin',
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'password' => 'admin123'
         ]);
 
-        Habit::factory(100)->create();
+        Habit::factory(30)->create();
         HabitLog::factory(1000)->create();
     }
 }

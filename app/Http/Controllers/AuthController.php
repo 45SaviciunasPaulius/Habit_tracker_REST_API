@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class AuthController extends Controller
@@ -14,11 +15,12 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request){
          $validated = $request->validated();
 
-         if(!Auth::attempt($validated)){
-            return response()->json(['message' => 'Bad credentials'], 401);
-         }
-        
-         $user = Auth::user();
+          $user = User::where('email', $validated['email'])->first();
+
+            if (!$user || !Hash::check($validated['password'], $user->password)) {
+                return response()->json(['message' => 'Bad credentials'], 401);
+            }
+
          $token = $user->createToken($user->name)->plainTextToken;
 
          return response()->json(['user' => $user, 'token' => $token], 200);
